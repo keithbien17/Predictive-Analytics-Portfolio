@@ -8,7 +8,7 @@ Each point has two dimensions:
 - **X:** Total cost of the home
 - **Y:** Price per square metre
 
-The objective is to identify skyline points — homes that are not dominated by another home across both dimensions. Lower values are preferred.
+The objective is to identify skyline points, homes that are not dominated by another home across both dimensions. Lower values are preferred.
 
 ## Algorithms Implemented
 
