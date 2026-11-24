@@ -1,0 +1,120 @@
+Task 3: Skyline Search
+Dataset: skyline_search.txt (15 points), maximum node capacity B = 5
+
+============================================================
+Method 1: Sequential Scan
+============================================================
+id=6, x=1.00, y=12.00
+id=2, x=2.00, y=9.00
+id=8, x=4.00, y=6.00
+id=12, x=7.00, y=3.00
+id=5, x=11.00, y=1.00
+Number of skyline points: 5
+Running time: 0.000013 seconds
+
+============================================================
+Method 2: BBS
+============================================================
+id=6, x=1.00, y=12.00
+id=2, x=2.00, y=9.00
+id=8, x=4.00, y=6.00
+id=12, x=7.00, y=3.00
+id=5, x=11.00, y=1.00
+Number of skyline points: 5
+Running time: 0.000290 seconds
+
+============================================================
+Method 3: BBS with Divide-and-Conquer
+============================================================
+id=6, x=1.00, y=12.00
+id=2, x=2.00, y=9.00
+id=8, x=4.00, y=6.00
+id=12, x=7.00, y=3.00
+id=5, x=11.00, y=1.00
+Number of skyline points: 5
+Running time: 0.000021 seconds
+
+All three methods return the same skyline: Yes
+
+############################################################
+Part B trace (for the report)
+############################################################
+
+R-tree on all points:
+R MBR=[(1,1),(15,13)]: children N1, N2, N3, N4, N5
+    N1 leaf MBR=[(14,6),(15,11)]: p11(14,11), p9(15,6)
+    N2 leaf MBR=[(2,6),(9,10)]: p8(4,6), p10(6,8), p2(2,9), p4(5,10), p15(9,9)
+    N3 leaf MBR=[(1,12),(3,13)]: p6(1,12), p13(3,13)
+    N4 leaf MBR=[(7,3),(8,5)]: p12(7,3), p1(8,5)
+    N5 leaf MBR=[(10,1),(13,7)]: p7(10,4), p5(11,1), p14(12,7), p3(13,2)
+
+BBS steps:
+pop R (mindist=1.41) -> expand, push [N1:15.23, N2:6.32, N3:12.04, N4:7.62, N5:10.05]
+    heap now: [N2:6.32, N4:7.62, N5:10.05, N3:12.04, N1:15.23]
+pop N2 (mindist=6.32) -> expand, push [p8:7.21, p10:10, p2:9.22, p4:11.18, p15:12.73]
+    heap now: [p8:7.21, N4:7.62, p2:9.22, p10:10, N5:10.05, p4:11.18, N3:12.04, p15:12.73, N1:15.23]
+pop p8 (mindist=7.21) -> added to skyline
+pop N4 (mindist=7.62) -> expand, push [p12:7.62, p1:9.43]
+    heap now: [p12:7.62, p2:9.22, p1:9.43, p10:10, N5:10.05, p4:11.18, N3:12.04, p15:12.73, N1:15.23]
+pop p12 (mindist=7.62) -> added to skyline
+pop p2 (mindist=9.22) -> added to skyline
+pop p1 (mindist=9.43) -> pruned, dominated by p12
+pop p10 (mindist=10) -> pruned, dominated by p8
+pop N5 (mindist=10.05) -> expand, push [p5:11.05, p3:13.15], skip dominated [p7, p14]
+    heap now: [p5:11.05, p4:11.18, N3:12.04, p15:12.73, p3:13.15, N1:15.23]
+pop p5 (mindist=11.05) -> added to skyline
+pop p4 (mindist=11.18) -> pruned, dominated by p8
+pop N3 (mindist=12.04) -> expand, push [p6:12.04], skip dominated [p13]
+    heap now: [p6:12.04, p15:12.73, p3:13.15, N1:15.23]
+pop p6 (mindist=12.04) -> added to skyline
+pop p15 (mindist=12.73) -> pruned, dominated by p8
+pop p3 (mindist=13.15) -> pruned, dominated by p5
+pop N1 (mindist=15.23) -> pruned, dominated by p8
+
+Divide-and-Conquer split (sorted by X):
+  Left : p6, p2, p13, p8, p4, p10, p12
+  Right: p1, p15, p7, p5, p14, p3, p11, p9
+
+R-tree on Left half:
+R MBR=[(1,3),(7,13)]: children N1, N2
+    N1 leaf MBR=[(2,3),(7,10)]: p8(4,6), p10(6,8), p2(2,9), p4(5,10), p12(7,3)
+    N2 leaf MBR=[(1,12),(3,13)]: p6(1,12), p13(3,13)
+BBS steps on Left half:
+pop R (mindist=3.16) -> expand, push [N1:3.61, N2:12.04]
+    heap now: [N1:3.61, N2:12.04]
+pop N1 (mindist=3.61) -> expand, push [p8:7.21, p10:10, p2:9.22, p4:11.18, p12:7.62]
+    heap now: [p8:7.21, p12:7.62, p2:9.22, p10:10, p4:11.18, N2:12.04]
+pop p8 (mindist=7.21) -> added to skyline
+pop p12 (mindist=7.62) -> added to skyline
+pop p2 (mindist=9.22) -> added to skyline
+pop p10 (mindist=10) -> pruned, dominated by p8
+pop p4 (mindist=11.18) -> pruned, dominated by p8
+pop N2 (mindist=12.04) -> expand, push [p6:12.04], skip dominated [p13]
+    heap now: [p6:12.04]
+pop p6 (mindist=12.04) -> added to skyline
+
+R-tree on Right half:
+R MBR=[(8,1),(15,11)]: children N1, N2, N3
+    N1 leaf MBR=[(11,1),(13,2)]: p5(11,1), p3(13,2)
+    N2 leaf MBR=[(8,4),(10,5)]: p7(10,4), p1(8,5)
+    N3 leaf MBR=[(9,6),(15,11)]: p9(15,6), p14(12,7), p15(9,9), p11(14,11)
+BBS steps on Right half:
+pop R (mindist=8.06) -> expand, push [N1:11.05, N2:8.94, N3:10.82]
+    heap now: [N2:8.94, N3:10.82, N1:11.05]
+pop N2 (mindist=8.94) -> expand, push [p7:10.77, p1:9.43]
+    heap now: [p1:9.43, p7:10.77, N3:10.82, N1:11.05]
+pop p1 (mindist=9.43) -> added to skyline
+pop p7 (mindist=10.77) -> added to skyline
+pop N3 (mindist=10.82) -> pruned, dominated by p1
+pop N1 (mindist=11.05) -> expand, push [p5:11.05, p3:13.15]
+    heap now: [p5:11.05, p3:13.15]
+pop p5 (mindist=11.05) -> added to skyline
+pop p3 (mindist=13.15) -> pruned, dominated by p5
+
+Left local skyline : p6, p2, p8, p12
+Right local skyline: p1, p7, p5
+Left skyline point with smallest y: p12 (y=3)
+  p1 (y=5): dominated -> removed
+  p7 (y=4): dominated -> removed
+  p5 (y=1): kept
+Final skyline: p6, p2, p8, p12, p5
