@@ -14,11 +14,11 @@ Through my postgraduate studies, I have been developing practical skills in data
 
 ## 🛠️ Technical Skills
 
-- **Programming:** Python, SQL, R
+- **Programming:** Python, SQL, R, Power BI
 - **Data Analysis:** Data Cleaning, Exploratory Data Analysis (EDA), Statistical Analysis
 - **Predictive Analytics:** Regression, Classification, Machine Learning
 - **Data Visualisation:** Tableau, Excel Dashboards
-- **Business & Operations:** Demand Forecasting, Sales Analysis, Inventory Planning
+- **Business & Operations:** Supply and Demand Forecasting, Sales Analysis, Inventory Planning, Process Improvement, Workflow Optimisation
 
 ## 📊 Academic Projects
 
